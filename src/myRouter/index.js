@@ -17,12 +17,18 @@ class vueRouter {
       // eslint-disable-next-line space-infix-ops
       location.hash ? '' : location.hash
       window.addEventListener('load', () => {
+        console.log('load')
         this.history.current = location.hash.slice(1)
       })
-      window.addEventListener('hashChange', () => {
-        console.log(11)
+      // 很奇怪这里事件监听就是不行 改为普通函数就可以触发
+      // window.addEventListener('hashChange', () => {
+      //   console.log(11)
+      //   this.history.current = location.hash.slice(1)
+      // }, false)
+      window.onhashchange = () => {
+        console.log('change')
         this.history.current = location.hash.slice(1)
-      })
+      }
     }
   }
   createMap () {
@@ -44,12 +50,12 @@ vueRouter.install = function (Vue) {
       } else {
         this._root = this.$parent._root
       }
+      // 这里如此是给this绑定$router变量 只能取值不可修改
       Object.defineProperty(this, '$router', {
         get () {
           return this._root._router
         }
       })
-      console.log(this.$router)
     }
   })
   Vue.component('router-view', {

@@ -10,6 +10,7 @@ export default {
   name: 'home',
   methods:{
       goD(){
+          location.hash='#/detail'
       }
   }
 }
